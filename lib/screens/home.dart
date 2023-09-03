@@ -1,5 +1,7 @@
 import 'package:berita_tabloid_pendidikan_indonesia/components/card_costume.dart';
 import 'package:berita_tabloid_pendidikan_indonesia/components/category_list.dart';
+import 'package:berita_tabloid_pendidikan_indonesia/model/berita.dart';
+import 'package:berita_tabloid_pendidikan_indonesia/services/apiServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -12,6 +14,24 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<Berita> _berita = [];
+
+  getBerita() async {
+    await ApiService().getBerita().then((value) {
+      setState(() {
+        _berita = value;
+        // print(_berita);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getBerita();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -110,9 +130,8 @@ class _HomeState extends State<Home> {
                       child: Row(
                         children: [
                           CardCostume(
-                            title: 'Lorem Ipsum Dolor Sit Amet',
-                            description:
-                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                            title: _berita[0].judul.toString(),
+                            description: _berita[0].isi.toString(),
                             width: 0.59,
                           ),
                           CardCostume(
